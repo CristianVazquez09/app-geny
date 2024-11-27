@@ -1,14 +1,18 @@
 package com.wolfpack.service.impl;
 
+import com.wolfpack.model.Appointment;
 import com.wolfpack.model.Client;
 import com.wolfpack.model.User;
 import com.wolfpack.model.enums.RoleEnum;
+import com.wolfpack.repo.IAppointmentRepo;
 import com.wolfpack.repo.IGenericRepo;
 import com.wolfpack.repo.IClientRepo;
 import com.wolfpack.service.IClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -17,6 +21,7 @@ public class ClientImpl extends CRUDServiceImpl<Client,Integer> implements IClie
 
 
     private final IClientRepo repo;
+    private final IAppointmentRepo appointmentRepo;
     private final BCryptPasswordEncoder passwordEncoder;
     private final RoleEnum ROLE_CLIENT = RoleEnum.CLIENT;
 
@@ -42,6 +47,11 @@ public class ClientImpl extends CRUDServiceImpl<Client,Integer> implements IClie
         client.getUser().setPassword(userFind.getPassword());
         client.getUser().setRole(ROLE_CLIENT);
         return repo.save(client);
+    }
+
+    @Override
+    public List<Appointment> findAllAppointments(Integer id) throws Exception {
+        return appointmentRepo.findAppointmentByIdClient(id);
     }
 }
 

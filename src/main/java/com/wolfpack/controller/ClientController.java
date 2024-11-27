@@ -1,7 +1,9 @@
 package com.wolfpack.controller;
 
+import com.wolfpack.dto.AppointmentDTO;
 import com.wolfpack.dto.ClientDTO;
 import com.wolfpack.dto.ClientRegistrationDTO;
+import com.wolfpack.model.Appointment;
 import com.wolfpack.model.Client;
 import com.wolfpack.service.IClientService;
 import jakarta.validation.Valid;
@@ -34,6 +36,13 @@ public class ClientController {
         Client obj = service.findById(id);
 
         return ResponseEntity.ok(convertToDTO(obj));
+    }
+    @GetMapping("/findAllAppointments/{id}")
+    public ResponseEntity<List<AppointmentDTO>> findAllAppointments (@PathVariable("id") Integer id) throws Exception {
+
+        List<AppointmentDTO> obj = service.findAllAppointments(id).stream().map(e -> mapper.map(e, AppointmentDTO.class)).toList();
+
+        return ResponseEntity.ok(obj);
     }
 
     @PostMapping
